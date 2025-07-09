@@ -83,78 +83,97 @@
   <button id="spinBtn" onclick="spin()">Lancer la roue</button>
   <div id="result"></div>
 
-  <script>
-    const prizes = [
-      { label: "Citronnade", chance: 20 },
-      { label: "Café", chance: 20 },
-      { label: "Café frappé", chance: 10 },
-      { label: "Brioche perdue", chance: 5 },
-      { label: "Cocktail au choix", chance: 20 },
-      { label: "10% de remise", chance: 25 }
-    ];
+<script>
+  const prizes = [
+    { label: "Citronnade", chance: 20 },
+    { label: "Café", chance: 20 },
+    { label: "Café frappé", chance: 10 },
+    { label: "Brioche perdue", chance: 5 },
+    { label: "Cocktail au choix", chance: 20 },
+    { label: "10% de remise", chance: 25 }
+  ];
 
-    const segments = prizes.map(p => p.label);
-    const colors = ["#f1c40f", "#e67e22", "#3498db", "#9b59b6", "#1abc9c", "#e74c3c"];
-    let wheelCanvas = document.getElementById("wheel");
-    let ctx = wheelCanvas.getContext("2d");
-    let spinBtn = document.getElementById("spinBtn");
+  const segments = prizes.map(p => p.label);
+  const colors = ["#f1c40f", "#e67e22", "#3498db", "#9b59b6", "#1abc9c", "#e74c3c"];
+  const canvas = document.getElementById("wheel");
+  const ctx = canvas.getContext("2d");
+  const spinBtn = document.getElementById("spinBtn");
+  let angle = 0;
+  let currentRotation = 0;
+  let spinning = false;
 
-    function drawWheel() {
-      let arcSize = (2 * Math.PI) / segments.length;
-      segments.forEach((label, i) => {
-        let angle = i * arcSize;
-        ctx.beginPath();
-        ctx.fillStyle = colors[i % colors.length];
-        ctx.moveTo(150, 150);
-        ctx.arc(150, 150, 150, angle, angle + arcSize);
-        ctx.lineTo(150, 150);
-        ctx.fill();
-        ctx.save();
-        ctx.translate(150, 150);
-        ctx.rotate(angle + arcSize / 2);
-        ctx.fillStyle = "#fff";
-        ctx.font = "13px Arial";
-        ctx.fillText(label, 60, 5);
-        ctx.restore();
-      });
+  function drawWheel(rotation = 0) {
+    const arcSize = (2 * Math.PI) / segments.length;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    segments.forEach((label, i) => {
+      const startAngle = i * arcSize + rotation;
+      const endAngle = startAngle + arcSize;
+
+      ctx.beginPath();
+      ctx.fillStyle = colors[i % colors.length];
+      ctx.moveTo(150, 150);
+      ctx.arc(150, 150, 150, startAngle, endAngle);
+      ctx.lineTo(150, 150);
+      ctx.fill();
+
+      ctx.save();
+      ctx.translate(150, 150);
+      ctx.rotate(startAngle + arcSize / 2);
+      ctx.fillStyle = "#fff";
+      ctx.font = "13px Arial";
+      ctx.fillText(label, 60, 5);
+      ctx.restore();
+    });
+  }
+
+  drawWheel();
+
+  function getPrizeIndexFromAngle(finalAngle) {
+    const arcSize = (2 * Math.PI) / segments.length;
+    const correctedAngle = (2 * Math.PI - (finalAngle % (2 * Math.PI))) % (2 * Math.PI);
+    return Math.floor(correctedAngle / arcSize);
+  }
+
+  function generateCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i = 0; i < 8; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
+    return code;
+  }
 
-    drawWheel();
+  function spin() {
+    if (spinning) return;
+    spinning = true;
+    spinBtn.disabled = true;
 
-    function getPrizeIndex() {
-      const weights = prizes.map(p => p.chance);
-      const total = weights.reduce((a, b) => a + b, 0);
-      let rand = Math.random() * total;
-      for (let i = 0; i < weights.length; i++) {
-        if (rand < weights[i]) return i;
-        rand -= weights[i];
-      }
-      return 0;
-    }
+    const totalRotation = Math.PI * 10 + Math.random() * 2 * Math.PI; // 5 tours + aléatoire
+    const duration = 4000;
+    const start = performance.now();
 
-    function generateCode() {
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      let code = '';
-      for (let i = 0; i < 8; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return code;
-    }
+    function animate(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeOut = 1 - Math.pow(1 - progress, 3); // easing
 
-    function spin() {
-      const prizeIndex = getPrizeIndex();
-      const arcSize = 360 / segments.length;
-      const stopAngle = (360 - prizeIndex * arcSize) + 360 * 5 + Math.random() * arcSize;
-      wheelCanvas.style.transform = `rotate(${stopAngle}deg)`;
-      spinBtn.disabled = true;
+      angle = easeOut * totalRotation;
+      drawWheel(angle);
 
-      setTimeout(() => {
-        const prize = segments[prizeIndex];
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        const index = getPrizeIndexFromAngle(angle);
+        const prize = segments[index];
         const code = generateCode();
         document.getElementById("result").innerHTML = `🎁 Vous avez gagné : <strong>${prize}</strong><br>
-        🎫 Votre code : <span id="code">${code}</span><br><small>Montrez cette capture d’écran lors de votre prochaine venue.</small>`;
-      }, 4000);
+          🎫 Votre code : <span id="code">${code}</span><br><small>Montrez cette capture d’écran lors de votre prochaine venue.</small>`;
+        spinning = false;
+      }
     }
-  </script>
+
+    requestAnimationFrame(animate);
+  }
+</script>
 </body>
 </html>
