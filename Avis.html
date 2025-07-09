@@ -31,20 +31,22 @@
   </style>
 </head>
 <body>
-  <h1>Jouer à la Roue de la Fortune<br>avec Maison Bohème</h1>
-  <p>Merci de laisser un avis sur Google avant de participer 🎁</p>
-  <button onclick="openReview()">Laisser un avis</button>
-  <br>
-  <button id="accessButton" onclick="goToWheel()">Accéder à la roue</button>
+  <div class="container">
+    <h1>Jouer à la Roue de la Fortune<br>avec Maison Bohème</h1>
+    <p>Merci de laisser un avis sur Google avant de participer 🎁</p>
+    <button onclick="openReview()">Laisser un avis</button>
+    <br>
+    <button id="accessButton" onclick="goToWheel()">Accéder à la roue</button>
+  </div>
 
   <script>
     function openReview() {
-      window.open("https://www.google.com/search?-d&sca_esv=659f7c99a03a1a5c&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E4ApDYyFiioRZg8gZwtZXEaugI6fzVuIu4PydmXHjGvYTRXvYyAEq7HYS1A8BrwAmxonvNtnOf3178Mri5mu_KLzz6G5Nk4oa6k3DuiozS2WR06ejO8rMUIRNFdmR5f7Rj0SGfU%3D&q=Maison+Boh%C3%A8me+-+Restaurant+Marseille+6+Avis&sa=X&ved=2ahUKEwjFsNTJj6-OAxXJTaQEHZcbAYsQ0bkNegQIORAE", "_blank");
+      window.open("https://www.google.com/search?...", "_blank");
       document.getElementById("accessButton").style.display = "inline-block";
     }
 
     function goToWheel() {
-      window.location.href = "wheel.html"; // redirige vers la vraie roue
+      window.location.href = "wheel.html";
     }
   </script>
 </body>
