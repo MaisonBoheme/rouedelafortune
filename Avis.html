@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jouer à la Roue de la Fortune - Maison Bohème</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #3A5C39;
+      text-align: center;
+      padding: 40px;
+      color:white;
+    }
+    h1 {
+      color: #FFA7CF;
+    }
+    button {
+      font-size: 18px;
+      padding: 15px 30px;
+      margin: 20px;
+      background-color: #FFA7CF;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #accessButton {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jouer à la Roue de la Fortune<br>avec Maison Bohème</h1>
+  <p>Merci de laisser un avis sur Google avant de participer 🎁</p>
+  <button onclick="openReview()">Laisser un avis</button>
+  <br>
+  <button id="accessButton" onclick="goToWheel()">Accéder à la roue</button>
+
+  <script>
+    function openReview() {
+      window.open("https://www.google.com/search?-d&sca_esv=659f7c99a03a1a5c&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E4ApDYyFiioRZg8gZwtZXEaugI6fzVuIu4PydmXHjGvYTRXvYyAEq7HYS1A8BrwAmxonvNtnOf3178Mri5mu_KLzz6G5Nk4oa6k3DuiozS2WR06ejO8rMUIRNFdmR5f7Rj0SGfU%3D&q=Maison+Boh%C3%A8me+-+Restaurant+Marseille+6+Avis&sa=X&ved=2ahUKEwjFsNTJj6-OAxXJTaQEHZcbAYsQ0bkNegQIORAE", "_blank");
+      document.getElementById("accessButton").style.display = "inline-block";
+    }
+
+    function goToWheel() {
+      window.location.href = "wheel.html"; // redirige vers la vraie roue
+    }
+  </script>
+</body>
+</html>
