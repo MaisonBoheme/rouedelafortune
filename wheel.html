@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Roue de la Fortune - Maison Bohème</title>
   <style>
     body {
@@ -17,20 +18,22 @@
       color: #FFA7CF;
       text-align: center;
     }
-    .wheel-container {
-      position: relative;
-      width: 300px;
-      height: 300px;
-      margin: 30px 0;
-    }
-    #wheel {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 10px solid #FFA7CF;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
-    }
+   .wheel-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 30px 0;
+}
+
+#wheel {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  border: 10px solid #FFA7CF;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+}
     #pointer {
       position: absolute;
       top: -20px;
